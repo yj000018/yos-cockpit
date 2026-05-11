@@ -485,12 +485,12 @@
       <div class="card">
         <div class="card-title">🧠 Mémoire Y-OS</div>
         <div class="actions-grid">
-          <button class="action-btn" onclick="triggerAction('memorize')">
+          <button class="action-btn" data-action='memorize'>
             <span class="btn-icon">💾</span>
             <span>Mémoriser</span>
             <span class="btn-label">→ Mem0 + Notion</span>
           </button>
-          <button class="action-btn" onclick="triggerAction('memorize-key')">
+          <button class="action-btn" data-action='memorize-key'>
             <span class="btn-icon">🔑</span>
             <span>Point clé</span>
             <span class="btn-label">→ Notion KB</span>
@@ -501,22 +501,22 @@
       <div class="card">
         <div class="card-title">✅ Tâches</div>
         <div class="actions-grid">
-          <button class="action-btn" onclick="triggerAction('create-task')">
+          <button class="action-btn" data-action='create-task'>
             <span class="btn-icon">➕</span>
             <span>Créer tâche</span>
             <span class="btn-label">→ Todoist</span>
           </button>
-          <button class="action-btn" onclick="triggerAction('create-issue')">
+          <button class="action-btn" data-action='create-issue'>
             <span class="btn-icon">📐</span>
             <span>Créer issue</span>
             <span class="btn-label">→ Linear</span>
           </button>
-          <button class="action-btn accent" onclick="triggerAction('follow-up')">
+          <button class="action-btn accent" data-action='follow-up'>
             <span class="btn-icon">🔄</span>
             <span>Follow-up</span>
             <span class="btn-label">→ Rappel</span>
           </button>
-          <button class="action-btn accent" onclick="triggerAction('archive-session')">
+          <button class="action-btn accent" data-action='archive-session'>
             <span class="btn-icon">📦</span>
             <span>Archiver</span>
             <span class="btn-label">→ Session</span>
@@ -527,12 +527,12 @@
       <div class="card">
         <div class="card-title">📤 Export</div>
         <div class="actions-grid">
-          <button class="action-btn" onclick="triggerAction('copy-response')">
+          <button class="action-btn" data-action='copy-response'>
             <span class="btn-icon">📋</span>
             <span>Copier</span>
             <span class="btn-label">Réponse</span>
           </button>
-          <button class="action-btn" onclick="triggerAction('share-notion')">
+          <button class="action-btn" data-action='share-notion'>
             <span class="btn-icon">📓</span>
             <span>Envoyer</span>
             <span class="btn-label">→ Notion</span>
@@ -629,7 +629,7 @@
           <div class="setting-label">URL Webhook Tâche</div>
           <input type="text" id="webhook-task" placeholder="https://n8n.../webhook/task">
         </div>
-        <button class="save-btn" onclick="saveSettings()">Sauvegarder</button>
+        <button class="save-btn" data-action="save-settings">Sauvegarder</button>
       </div>
     </div>
 

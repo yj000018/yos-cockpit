@@ -19,9 +19,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   initTabs();
   initSettingsUI();
+  initActionButtons();
   listenForMessages();
   setStatus('waiting', 'En attente');
 });
+
+// ── Boutons d'action (data-action, CSP-safe) ─────────────────
+function initActionButtons() {
+  document.querySelectorAll('[data-action]').forEach(btn => {
+    const action = btn.dataset.action;
+    if (action === 'save-settings') {
+      btn.addEventListener('click', saveSettings);
+    } else {
+      btn.addEventListener('click', () => triggerAction(action));
+    }
+  });
+}
 
 // ── Tabs ─────────────────────────────────────────────────────
 function initTabs() {

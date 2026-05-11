@@ -1,0 +1,230 @@
+/* ============================================================
+   Y-OS Branding CSS — injecté sur manus.im
+   Stratégie : override via variables CSS + sélecteurs génériques
+   Dégradation gracieuse : si Manus change, l'interface reste
+   fonctionnelle, le branding disparaît proprement.
+   ============================================================ */
+
+/* ── Variables Y-OS ── */
+:root {
+  --yos-primary:     #6C63FF;
+  --yos-accent:      #00D4AA;
+  --yos-bg:          #0D0D1A;
+  --yos-bg-panel:    #12122A;
+  --yos-bg-card:     #1A1A35;
+  --yos-text:        #E8E8F0;
+  --yos-text-muted:  #8888AA;
+  --yos-border:      rgba(108, 99, 255, 0.2);
+}
+
+/* ── Fond global ── */
+body,
+[class*="layout"],
+[class*="Layout"],
+[class*="app-container"],
+[class*="AppContainer"] {
+  background-color: var(--yos-bg) !important;
+  color: var(--yos-text) !important;
+}
+
+/* ── Panel gauche (sidebar) ── */
+[class*="sidebar"],
+[class*="Sidebar"],
+[class*="left-panel"],
+[class*="LeftPanel"],
+nav[class*="nav"],
+aside {
+  background-color: var(--yos-bg-panel) !important;
+  border-right: 1px solid var(--yos-border) !important;
+}
+
+/* ── Panel droit ── */
+[class*="right-panel"],
+[class*="RightPanel"],
+[class*="detail-panel"],
+[class*="DetailPanel"] {
+  background-color: var(--yos-bg-panel) !important;
+  border-left: 1px solid var(--yos-border) !important;
+}
+
+/* ── Header ── */
+header,
+[class*="header"],
+[class*="Header"],
+[class*="topbar"],
+[class*="Topbar"],
+[class*="navbar"],
+[class*="Navbar"] {
+  background-color: var(--yos-bg-panel) !important;
+  border-bottom: 1px solid var(--yos-border) !important;
+}
+
+/* ── Zone de chat ── */
+[class*="chat"],
+[class*="Chat"],
+[class*="message-list"],
+[class*="MessageList"],
+[class*="conversation"],
+[class*="Conversation"] {
+  background-color: var(--yos-bg) !important;
+}
+
+/* ── Bulles de messages ── */
+[class*="message-bubble"],
+[class*="MessageBubble"],
+[class*="user-message"],
+[class*="UserMessage"] {
+  background-color: rgba(108, 99, 255, 0.12) !important;
+  border: 1px solid var(--yos-border) !important;
+  border-radius: 12px !important;
+}
+
+[class*="assistant-message"],
+[class*="AssistantMessage"],
+[class*="agent-message"],
+[class*="AgentMessage"],
+[data-role="assistant"] {
+  background-color: var(--yos-bg-card) !important;
+  border: 1px solid var(--yos-border) !important;
+  border-radius: 12px !important;
+}
+
+/* ── Typographie des réponses ── */
+[class*="assistant-message"] h1,
+[class*="AssistantMessage"] h1,
+[data-role="assistant"] h1 {
+  color: var(--yos-primary) !important;
+  border-bottom: 1px solid var(--yos-border) !important;
+  padding-bottom: 6px !important;
+}
+
+[class*="assistant-message"] h2,
+[class*="AssistantMessage"] h2,
+[data-role="assistant"] h2 {
+  color: var(--yos-accent) !important;
+}
+
+[class*="assistant-message"] h3,
+[class*="AssistantMessage"] h3,
+[data-role="assistant"] h3 {
+  color: #A8A0FF !important;
+}
+
+[class*="assistant-message"] code,
+[class*="AssistantMessage"] code,
+[data-role="assistant"] code {
+  background: rgba(0, 212, 170, 0.08) !important;
+  color: var(--yos-accent) !important;
+  border: 1px solid rgba(0, 212, 170, 0.2) !important;
+  border-radius: 4px !important;
+  padding: 1px 5px !important;
+}
+
+[class*="assistant-message"] pre,
+[class*="AssistantMessage"] pre,
+[data-role="assistant"] pre {
+  background: #0A0A18 !important;
+  border: 1px solid var(--yos-border) !important;
+  border-radius: 8px !important;
+}
+
+/* ── Zone de saisie ── */
+textarea,
+[contenteditable="true"],
+[class*="input-area"],
+[class*="InputArea"],
+[class*="prompt-input"],
+[class*="PromptInput"] {
+  background-color: var(--yos-bg-card) !important;
+  color: var(--yos-text) !important;
+  border: 1px solid var(--yos-border) !important;
+  border-radius: 12px !important;
+}
+
+textarea:focus,
+[contenteditable="true"]:focus {
+  border-color: var(--yos-primary) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2) !important;
+}
+
+/* ── Boutons ── */
+button[class*="primary"],
+button[class*="Primary"],
+button[type="submit"] {
+  background: linear-gradient(135deg, var(--yos-primary), var(--yos-accent)) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+}
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--yos-primary); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--yos-accent); }
+
+/* ── Logo Y-OS injecté ── */
+#yos-logo-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+  border-radius: 8px !important;
+  transition: background 0.2s !important;
+}
+
+#yos-logo-btn:hover {
+  background: rgba(108, 99, 255, 0.12) !important;
+}
+
+.yos-logo-label {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  background: linear-gradient(135deg, #6C63FF, #00D4AA) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* ── Menu contextuel Y-OS ── */
+#yos-ctx-menu {
+  position: fixed !important;
+  z-index: 999998 !important;
+  background: #12122A !important;
+  border: 1px solid rgba(108, 99, 255, 0.3) !important;
+  border-radius: 10px !important;
+  padding: 6px !important;
+  min-width: 210px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  display: none !important;
+}
+
+#yos-ctx-menu.visible { display: block !important; }
+
+.yos-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  color: #E8E8F0 !important;
+  cursor: pointer !important;
+  transition: background 0.15s !important;
+  font-family: system-ui, sans-serif !important;
+}
+
+.yos-menu-item:hover {
+  background: rgba(108, 99, 255, 0.15) !important;
+}
+
+.yos-menu-sep {
+  height: 1px !important;
+  background: rgba(108, 99, 255, 0.2) !important;
+  margin: 4px 8px !important;
+}

@@ -1,94 +1,121 @@
-# Manus Enhancer — Y-OS
+# Y-OS Cockpit for Manus
 
-> Tampermonkey userscript that enriches the [Manus](https://manus.im) interface with quick-reaction buttons and step-collapse controls.
+Transform [manus.im](https://manus.im) into a Y-OS cognitive cockpit.  
+Two clients, one shared core, zero redundancy.
 
-**Version:** 1.2.0 | **Author:** Yannick Jolliet / Y-OS
+**Version:** 0.2.0 | **Author:** Yannick Jolliet / Y-OS
 
 ---
 
-## Features
+## Architecture v0.2
 
-| Feature | Description |
+```
+manus-enhancer/
+├── shared/
+│   └── yos-core.js          ← Shared: config, webhooks, response analysis, branding
+├── extension/               ← Brave / Dia (Mac) — Full cockpit with Side Panel
+│   ├── manifest.json
+│   ├── background.js
+│   ├── content_script.js
+│   ├── yos_branding.css
+│   ├── side_panel/
+│   │   ├── index.html       ← 4-tab cockpit UI
+│   │   └── panel.js
+│   └── icons/
+└── userscript/              ← Mobile / Gear — TM userscript
+    └── yos-mobile.user.js   ← @require shared/yos-core.js from GitHub Raw
+```
+
+---
+
+## 🖥 Mac / Brave / Dia — Extension
+
+### What it does
+- **Branding CSS** : Y-OS colors (violet/cyan), dark theme, Y-OS logo replacing Manus logo
+- **Logo menu** : click Y-OS logo → contextual menu (Memorize, Task, Archive, Nav links)
+- **Side Panel** — 4 tabs:
+  - ⚡ **Smart** : auto-analysis of each Manus response — summary, numbered choices as clickable buttons, suggested actions, content flags
+  - 🎯 **Actions** : permanent Y-OS action buttons (Memory → Mem0/Notion, Task → Todoist, Issue → Linear, Archive session, Copy, Notion)
+  - 🗺 **Nav** : direct links to Notion, Linear, n8n, GitHub, Manus Projects
+  - ⚙️ **Settings** : n8n webhook URLs, feature toggles
+
+### Install (2 min, one-time)
+1. Clone or download this repo
+2. Brave → `brave://extensions/` → enable **Developer mode**
+3. **Load unpacked** → select the `extension/` folder
+4. Go to `manus.im` → click Y-OS icon → Side Panel opens
+
+---
+
+## 📱 Mobile / Gear — Tampermonkey Userscript
+
+### What it does
+- **Branding CSS** : Y-OS dark theme
+- **Y-OS logo** + contextual menu (tap logo)
+- **Action bar** (bottom) : Memory 🧠 / Task ✅ / Choices 🔢 / Archive 📦
+- **Choices panel** : when Manus proposes numbered options → tap 🔢 → panel with clickable buttons → injects choice into prompt
+- **Settings panel** : configure n8n webhook URLs (stored in TM storage)
+- Uses `GM_xmlhttpRequest` for CORS-free webhook calls
+
+### Install (1 click)
+**[→ Install Y-OS Mobile Userscript](https://raw.githubusercontent.com/yj000018/manus-enhancer/main/userscript/yos-mobile.user.js)**
+
+In Gear browser: open the link above → Tampermonkey will prompt to install.
+
+---
+
+## Shared Core — `shared/yos-core.js`
+
+Single source of truth for both clients:
+
+| Export | Description |
 |---|---|
-| **Reaction buttons** | 👌 OK / ✅ Do it / 📋 Copy / 🚫 No / ✏️ Edit / 🔁 Retry — appear on hover over any message |
-| **Copy** | Copies full message text to clipboard |
-| **OK / Do it / No / Retry** | Pre-fills the input with a quick response (press Enter to send) |
-| **Steps toggle** | Floating button — cycles 3 modes: All / Collapsed / Hidden |
-| **Phase collapse** | Click any phase title to expand/collapse its micro-steps |
-| **Persistence** | Steps mode saved between sessions via GM_setValue |
+| `YOS_CONFIG` | Webhooks, feature flags, DOM selectors |
+| `YOS_LINKS` | Navigation links (Notion, Linear, n8n, GitHub) |
+| `YOS_BRANDING` | Colors, logo SVG |
+| `yosAnalyzeResponse(text)` | Detects numbered choices, suggested actions, content flags |
+| `yosCallWebhook(url, payload)` | POST to n8n webhook |
+| `yosShowToast(message)` | Lightweight in-page notification |
+| `yosInjectPrompt(text)` | Injects text into Manus prompt input |
+| `yosQueryFirst/All(selectors)` | Robust multi-selector DOM query |
+
+**To update config** (webhooks, links, selectors) : edit `shared/yos-core.js` → both clients update automatically.
 
 ---
 
-## Installation
+## Connecting n8n Webhooks
 
-### 1. Install Tampermonkey
+Payload format sent to all webhooks:
+```json
+{
+  "action": "memorize",
+  "text": "Last Manus response...",
+  "timestamp": "2026-05-11T12:00:00.000Z",
+  "yos_version": "0.2.0"
+}
+```
 
-- Chrome: [Tampermonkey on Chrome Web Store](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
-- Firefox: [Tampermonkey on AMO](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)
-
-### 2. Install the script
-
-**Option A — Direct install (recommended):**
-
-Click the raw script link → Tampermonkey will prompt to install automatically:
-
-👉 [Install manus-enhancer.user.js](https://raw.githubusercontent.com/yj000018/manus-enhancer/main/manus-enhancer.user.js)
-
-**Option B — Manual:**
-
-1. Open Tampermonkey → Create new script
-2. Delete default content, paste the content of `manus-enhancer.user.js`
-3. `Ctrl+S` to save
-
-### 3. Use it
-
-Navigate to `https://manus.im/app` — the script activates automatically.
+**Extension** : Side Panel → ⚙️ Settings tab  
+**Mobile TM** : tap Y-OS logo → ⚙️ Y-OS Settings
 
 ---
 
-## Auto-update
+## Roadmap
 
-The script includes `@updateURL` pointing to this repo. Tampermonkey will check for updates automatically.
-
-To force update: Tampermonkey dashboard → script → check for updates.
-
----
-
-## Usage
-
-**Reaction buttons**
-- Hover over any message (user or Manus)
-- Button bar appears at the bottom of the message
-- Click → action executed + toast confirmation
-
-**Steps control (floating button, top-right)**
-- `👁 Steps: all` — normal display
-- `⊟ Steps: collapsed` — micro-steps collapsed (default on load)
-- `🙈 Steps: hidden` — micro-steps invisible
-
-**Individual collapse**
-- Click any phase title (e.g. "Analyzing interface...") to expand/collapse its steps
+- [ ] Inspect real Manus DOM → refine CSS selectors in `yos-core.js`
+- [ ] Connect n8n webhooks (Memory → Mem0, Task → Todoist, Archive → session-synthesizer)
+- [ ] Keyboard shortcuts in Extension (Alt+M = Memorize, Alt+T = Task)
+- [ ] Read active project name from Manus URL → display in Side Panel header
+- [ ] Session history in Side Panel (via Manus API v2)
 
 ---
 
-## Technical notes
+## Legacy — v1.x Tampermonkey Script
 
-- **Selectors:** Based on Manus v1.6 Tailwind classes — may need update if Manus changes its DOM
-- **Compatibility:** Chrome + Firefox + Edge with Tampermonkey ≥ 5.x
-- **Server verbosity:** Not modifiable (API-side). The script hides/collapses DOM-side only.
-- **MutationObserver:** Watches for new messages in real time
+The original `manus-enhancer.user.js` (reaction buttons, steps collapse) is preserved at the repo root.
 
----
-
-## Maintenance
-
-This repo is the single source of truth for the script. To update:
-
-1. Edit `manus-enhancer.user.js`
-2. Increment `@version`
-3. Commit and push to `main`
-4. Tampermonkey auto-updates on next check
+👉 [Install legacy v1 script](https://raw.githubusercontent.com/yj000018/manus-enhancer/main/manus-enhancer.user.js)
 
 ---
 
-*Part of the Y-OS ecosystem — [yannick-jolliet](https://github.com/yj000018)*
+*Part of the Y-OS ecosystem — [yj000018](https://github.com/yj000018)*

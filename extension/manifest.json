@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Y-OS Cockpit",
+  "version": "0.2.0",
+  "description": "Y-OS Cognitive Cockpit for Manus — Side Panel, Smart Response Analysis, Branding",
+  "icons": {
+    "16":  "icons/yos_16.png",
+    "32":  "icons/yos_32.png",
+    "48":  "icons/yos_48.png",
+    "128": "icons/yos_128.png"
+  },
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://manus.im/*",
+    "https://*.manus.im/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://manus.im/*", "https://*.manus.im/*"],
+      "js": ["shared/yos-core.js", "content_script.js"],
+      "css": ["yos_branding.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "side_panel/index.html"
+  },
+  "action": {
+    "default_title": "Y-OS Cockpit",
+    "default_icon": {
+      "16":  "icons/yos_16.png",
+      "32":  "icons/yos_32.png",
+      "48":  "icons/yos_48.png",
+      "128": "icons/yos_128.png"
+    }
+  }
+}

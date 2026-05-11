@@ -25,7 +25,7 @@
   "content_scripts": [
     {
       "matches": ["https://manus.im/*", "https://*.manus.im/*"],
-      "js": ["shared/yos-core.js", "content_script.js"],
+      "js": ["yos-core.js", "content_script.js"],
       "css": ["yos_branding.css"],
       "run_at": "document_idle"
     }

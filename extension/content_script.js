@@ -29,30 +29,69 @@
   }
 
   // ── Detect message nodes ─────────────────────────────────────
+  // DOM Manus (May 2026) — sélecteurs stables basés sur data-event-id
+  // User turn:     [data-event-id] avec classe contenant 'items-end'
+  // Assistant turn:[data-event-id] avec classe contenant 'gap-2 w-full'
+  // Mémorisé dans Mem0 (yannick-jolliet / yos-cockpit / dom-structure)
+
+  function classifyTurnEl(el) {
+    const cls = el.className || '';
+    // User: flex w-full flex-col items-end justify-end group mt-3
+    if (cls.includes('items-end') && cls.includes('w-full')) return 'user';
+    // Assistant: flex flex-col gap-2 w-full group mt-3
+    if (cls.includes('gap-2') && cls.includes('w-full') && cls.includes('group')) return 'assistant';
+    // Fallback: chercher dans les enfants si la bulle est à droite (items-end)
+    if (el.querySelector('[class*="rounded-br-none"]')) return 'user';
+    if (el.querySelector('[class*="whitespace-pre-wrap"]')) return 'assistant';
+    return null;
+  }
+
+  function extractTurnText(el, type) {
+    if (type === 'user') {
+      // Bulle utilisateur: SPAN.whitespace-pre-wrap dans .rounded-br-none
+      const span = el.querySelector('.ltr\\:rounded-br-none span, [class*="rounded-br-none"] span');
+      if (span) return span.innerText?.trim() || '';
+      // Fallback: premier span avec du texte
+      const spans = el.querySelectorAll('span');
+      for (const s of spans) {
+        const t = s.innerText?.trim();
+        if (t && t.length > 3) return t;
+      }
+    } else {
+      // Réponse assistant: DIV.py-[3px].whitespace-pre-wrap
+      const divs = el.querySelectorAll('div');
+      for (const d of divs) {
+        const cls = d.className || '';
+        if (cls.includes('whitespace-pre-wrap') || cls.includes('py-[3px]')) {
+          const t = d.innerText?.trim();
+          if (t && t.length > 3) return t;
+        }
+      }
+      // Fallback: innerText du conteneur entier (sans les boutons)
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('button, [role="button"], svg').forEach(n => n.remove());
+      return clone.innerText?.trim() || '';
+    }
+    return el.innerText?.trim() || '';
+  }
+
   function detectTurns() {
-    const candidates = document.querySelectorAll([
-      '[class*="message"]',
-      '[class*="turn"]',
-      '[class*="chat-item"]',
-      '[data-message-id]',
-      '[data-role]'
-    ].join(','));
+    // Sélecteur principal: tous les [data-event-id] dans le chat
+    const turnEls = document.querySelectorAll('[data-event-id]');
+    if (!turnEls.length) return;
 
     const newTurns = [];
-    candidates.forEach((el, i) => {
-      const text = el.innerText?.trim() || '';
-      if (text.length < 5) return;
+    turnEls.forEach((el) => {
+      const type = classifyTurnEl(el);
+      if (!type) return;
 
-      const cls = (el.className || '') + (el.getAttribute('data-role') || '');
-      const isUser = /user|human|prompt/i.test(cls);
-      const isAssistant = /assistant|ai|response|bot/i.test(cls);
-
-      if (!isUser && !isAssistant) return;
+      const text = extractTurnText(el, type);
+      if (!text || text.length < 3) return;
 
       newTurns.push({
-        type: isUser ? 'user' : 'assistant',
+        type,
         el,
-        text: text.slice(0, 2000),
+        text: text.slice(0, 3000),
         index: newTurns.length,
         ts: Date.now()
       });

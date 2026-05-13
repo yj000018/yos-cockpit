@@ -3,6 +3,15 @@
    Palette: Violet #8B5CF6 · Blue #3B82F6 · Fuchsia #EC4899 · Cyan #22D3EE
    ═══════════════════════════════════════════════════════════ */
 
+/* ── Manus CSS Variables Override (vrais sélecteurs DOM 2026-05-13) ── */
+:root,
+[data-theme],
+html {
+  --background-nav: #0f0a1e !important;
+  --text-disable: #6b21a8 !important;
+  --text-tertiary: #a78bfa !important;
+}
+
 /* ── CSS Variables ─────────────────────────────────────────── */
 :root {
   --yos-purple:  #8B5CF6;
@@ -20,7 +29,15 @@
   --yos-red:     #F87171;
 }
 
-/* ── Manus Left Panel (navigation sidebar) ─────────────────── */
+/* ── Manus Left Panel (navigation sidebar) — sélecteur réel ── */
+nav.\[\&_.simplebar-scrollbar\],
+nav[class*="background-nav"],
+nav {
+  background: var(--background-nav) !important;
+  border-right: 1px solid var(--yos-border) !important;
+  box-shadow: 2px 0 20px rgba(139,92,246,0.15) !important;
+}
+
 [class*="sidebar"],
 [class*="left-panel"],
 nav[class*="flex"][class*="flex-col"],
@@ -86,6 +103,17 @@ textarea:focus,
   border-color: var(--yos-purple) !important;
   box-shadow: 0 0 0 2px rgba(139,92,246,0.2) !important;
   outline: none !important;
+}
+
+/* ── Root container (vrais sélecteurs DOM) ── */
+div.flex.w-full.h-full.overflow-hidden {
+  background: linear-gradient(135deg, #0a0614 0%, #0d0a1a 50%, #0a0d1f 100%) !important;
+}
+
+/* SimpleBar scrollbar (sidebar sessions list) */
+.simplebar-scrollbar::before {
+  background: var(--yos-purple) !important;
+  border-radius: 4px !important;
 }
 
 /* ── Chat Response Typography (via data-event-id) ──────────── */

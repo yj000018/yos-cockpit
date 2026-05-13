@@ -661,3 +661,63 @@
   init();
 
 })();
+
+// ── PATCH v2.1 — Force Reload + Font Size Controls ────────────
+// Injected after main IIFE — runs after DOM ready
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ── Force Reload ────────────────────────────────────────────
+  const reloadBtn = document.getElementById('force-reload-btn');
+  const versionBadge = document.getElementById('version-badge');
+
+  function doForceReload() {
+    if (reloadBtn) { reloadBtn.textContent = '⏳ Reloading…'; reloadBtn.disabled = true; }
+    if (versionBadge) versionBadge.classList.add('reloading');
+    setTimeout(() => {
+      if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.reload) {
+        chrome.runtime.reload();
+      } else {
+        // fallback: notify user
+        alert('Force Reload: only works in dev mode (Load unpacked).');
+        if (reloadBtn) { reloadBtn.textContent = '🔄 Force Reload Extension'; reloadBtn.disabled = false; }
+        if (versionBadge) versionBadge.classList.remove('reloading');
+      }
+    }, 300);
+  }
+
+  if (reloadBtn) reloadBtn.addEventListener('click', doForceReload);
+  if (versionBadge) versionBadge.addEventListener('click', doForceReload);
+
+  // ── Font Size Controls ──────────────────────────────────────
+  const FONT_KEY = 'yos_font_size';
+  const FONT_MIN = 11;
+  const FONT_MAX = 18;
+  const FONT_STEP = 1;
+  const FONT_DEFAULT = 13;
+
+  async function loadFontSize() {
+    try {
+      const stored = await YOS.load(FONT_KEY, FONT_DEFAULT);
+      applyFontSize(stored);
+    } catch(e) { applyFontSize(FONT_DEFAULT); }
+  }
+
+  function applyFontSize(size) {
+    document.documentElement.style.setProperty('--fs', size + 'px');
+    document.body.style.fontSize = size + 'px';
+  }
+
+  async function changeFontSize(delta) {
+    const current = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fs')) || FONT_DEFAULT;
+    const next = Math.min(FONT_MAX, Math.max(FONT_MIN, current + delta));
+    applyFontSize(next);
+    await YOS.save(FONT_KEY, next);
+  }
+
+  const fontPlus  = document.getElementById('font-plus');
+  const fontMinus = document.getElementById('font-minus');
+  if (fontPlus)  fontPlus.addEventListener('click',  () => changeFontSize(+FONT_STEP));
+  if (fontMinus) fontMinus.addEventListener('click', () => changeFontSize(-FONT_STEP));
+
+  loadFontSize();
+});

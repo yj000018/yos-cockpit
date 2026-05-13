@@ -1,21 +1,164 @@
-/* Y-OS Cockpit v2 — yos_branding.css */
-/* Nav bar, selection menu, toast, branding overrides */
+/* ═══════════════════════════════════════════════════════════
+   Y-OS Cockpit v2.1 — yos_branding.css
+   Palette: Violet #8B5CF6 · Blue #3B82F6 · Fuchsia #EC4899 · Cyan #22D3EE
+   ═══════════════════════════════════════════════════════════ */
 
 /* ── CSS Variables ─────────────────────────────────────────── */
 :root {
-  --yos-purple: #7C3AED;
-  --yos-cyan: #06B6D4;
-  --yos-dark: #0F0F1A;
-  --yos-dark2: #1A1A2E;
-  --yos-dark3: #16213E;
-  --yos-border: rgba(124, 58, 237, 0.3);
-  --yos-text: #E2E8F0;
-  --yos-text-dim: #94A3B8;
-  --yos-green: #10B981;
-  --yos-radius: 8px;
+  --yos-purple:  #8B5CF6;
+  --yos-purple2: #6D28D9;
+  --yos-blue:    #3B82F6;
+  --yos-fuchsia: #EC4899;
+  --yos-cyan:    #22D3EE;
+  --yos-dark:    #0D0D1F;
+  --yos-dark2:   #13132B;
+  --yos-dark3:   #1A1A38;
+  --yos-border:  rgba(139, 92, 246, 0.3);
+  --yos-text:    #F1F5F9;
+  --yos-dim:     #94A3B8;
+  --yos-green:   #34D399;
+  --yos-red:     #F87171;
 }
 
-/* ── Fixed Navigation Bar ──────────────────────────────────── */
+/* ── Manus Left Panel (navigation sidebar) ─────────────────── */
+[class*="sidebar"],
+[class*="left-panel"],
+nav[class*="flex"][class*="flex-col"],
+aside {
+  background: linear-gradient(180deg,
+    rgba(13,13,31,0.98) 0%,
+    rgba(19,19,43,0.98) 100%) !important;
+  border-right: 1px solid var(--yos-border) !important;
+}
+
+/* Sidebar items hover */
+[class*="sidebar"] a:hover,
+[class*="sidebar"] button:hover {
+  background: rgba(139,92,246,0.12) !important;
+}
+
+/* Active session in sidebar */
+[class*="sidebar"] a[class*="active"],
+[class*="sidebar"] [aria-current="page"] {
+  background: rgba(139,92,246,0.2) !important;
+  border-left: 2px solid var(--yos-purple) !important;
+}
+
+/* ── Manus Chat Panel ──────────────────────────────────────── */
+main,
+[class*="chat-container"],
+[class*="conversation"],
+[class*="messages-container"] {
+  background: linear-gradient(160deg,
+    #0D0D1F 0%,
+    #0F0F24 50%,
+    #0D1020 100%) !important;
+}
+
+/* Chat header */
+header,
+[class*="header"][class*="flex"] {
+  background: rgba(13,13,31,0.92) !important;
+  border-bottom: 1px solid var(--yos-border) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Input area */
+[class*="input-area"],
+[class*="prompt-area"],
+[class*="composer"],
+form[class*="flex"] {
+  background: rgba(19,19,43,0.85) !important;
+  border-top: 1px solid var(--yos-border) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* Text input */
+textarea,
+[contenteditable="true"] {
+  background: rgba(26,26,56,0.8) !important;
+  border: 1px solid var(--yos-border) !important;
+  color: var(--yos-text) !important;
+  border-radius: 10px !important;
+}
+textarea:focus,
+[contenteditable="true"]:focus {
+  border-color: var(--yos-purple) !important;
+  box-shadow: 0 0 0 2px rgba(139,92,246,0.2) !important;
+  outline: none !important;
+}
+
+/* ── Chat Response Typography (via data-event-id) ──────────── */
+[data-event-id] h1 {
+  color: var(--yos-cyan) !important;
+  border-bottom: 1px solid rgba(34,211,238,0.2) !important;
+  padding-bottom: 5px !important;
+  margin-bottom: 8px !important;
+}
+[data-event-id] h2 {
+  color: #C4B5FD !important;
+}
+[data-event-id] h3 {
+  color: #67E8F9 !important;
+}
+[data-event-id] strong {
+  color: var(--yos-text) !important;
+  font-weight: 700 !important;
+}
+[data-event-id] code:not(pre code) {
+  background: rgba(52,211,153,0.1) !important;
+  border: 1px solid rgba(52,211,153,0.2) !important;
+  color: #6EE7B7 !important;
+  border-radius: 4px !important;
+  padding: 1px 5px !important;
+}
+[data-event-id] pre {
+  background: rgba(13,13,31,0.9) !important;
+  border: 1px solid var(--yos-border) !important;
+  border-radius: 8px !important;
+}
+[data-event-id] pre code {
+  color: #A5F3FC !important;
+}
+[data-event-id] table { border-collapse: collapse !important; width: 100% !important; }
+[data-event-id] th {
+  background: rgba(139,92,246,0.15) !important;
+  color: var(--yos-cyan) !important;
+  border: 1px solid var(--yos-border) !important;
+  padding: 6px 10px !important;
+}
+[data-event-id] td {
+  border: 1px solid rgba(139,92,246,0.15) !important;
+  padding: 5px 10px !important;
+  color: var(--yos-text) !important;
+}
+[data-event-id] tr:hover td {
+  background: rgba(139,92,246,0.07) !important;
+}
+[data-event-id] blockquote {
+  border-left: 3px solid var(--yos-fuchsia) !important;
+  background: rgba(236,72,153,0.07) !important;
+  padding: 8px 12px !important;
+  border-radius: 0 6px 6px 0 !important;
+  color: var(--yos-dim) !important;
+}
+
+/* ── User message bubble ───────────────────────────────────── */
+[data-event-id][class*="items-end"] [class*="rounded"] {
+  background: linear-gradient(135deg,
+    rgba(139,92,246,0.25) 0%,
+    rgba(59,130,246,0.2) 100%) !important;
+  border: 1px solid rgba(139,92,246,0.35) !important;
+  border-radius: 14px 14px 4px 14px !important;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--yos-dark); }
+::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--yos-purple); }
+
+/* ── Fixed Navigation Bar (injected by content_script) ─────── */
 #yos-nav-bar {
   position: fixed;
   bottom: 20px;
@@ -24,18 +167,19 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: rgba(15, 15, 26, 0.95);
+  background: rgba(13,13,31,0.95);
   border: 1px solid var(--yos-border);
   border-radius: 12px;
   padding: 8px 6px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.25);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 4px 24px rgba(139,92,246,0.3),
+    0 0 0 1px rgba(139,92,246,0.1);
 }
-
 #yos-nav-bar button {
-  background: rgba(124, 58, 237, 0.12);
+  background: rgba(139,92,246,0.12);
   border: 1px solid var(--yos-border);
-  border-radius: 6px;
+  border-radius: 7px;
   color: var(--yos-text);
   cursor: pointer;
   font-size: 13px;
@@ -45,21 +189,18 @@
   text-align: center;
   min-width: 36px;
 }
-
 #yos-nav-bar button:hover {
-  background: rgba(124, 58, 237, 0.35);
+  background: rgba(139,92,246,0.35);
   border-color: var(--yos-purple);
   transform: scale(1.05);
 }
-
 #yos-nav-bar button[data-nav="bookmark"]:hover {
-  background: rgba(6, 182, 212, 0.25);
+  background: rgba(34,211,238,0.25);
   border-color: var(--yos-cyan);
 }
-
 #yos-nav-bar button[data-nav="panel"] {
-  background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.3));
-  border-color: var(--yos-cyan);
+  background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.3));
+  border-color: var(--yos-blue);
   margin-top: 4px;
 }
 
@@ -70,34 +211,34 @@
   display: none;
   flex-wrap: wrap;
   gap: 4px;
-  background: rgba(15, 15, 26, 0.97);
+  background: rgba(13,13,31,0.97);
   border: 1px solid var(--yos-border);
   border-radius: 10px;
   padding: 8px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(139,92,246,0.15);
   max-width: 320px;
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
 }
-
 #yos-selection-menu button {
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(139,92,246,0.15);
   border: 1px solid var(--yos-border);
   border-radius: 6px;
   color: var(--yos-text);
   cursor: pointer;
-  font-size: 11px;
-  padding: 4px 8px;
+  font-size: 12px;
+  padding: 5px 9px;
   transition: all 0.12s ease;
   white-space: nowrap;
 }
-
 #yos-selection-menu button:hover {
-  background: rgba(124, 58, 237, 0.4);
+  background: rgba(139,92,246,0.4);
   border-color: var(--yos-purple);
 }
-
-#yos-selection-menu button[data-sel="ok"]:hover { background: rgba(16,185,129,0.3); border-color: var(--yos-green); }
-#yos-selection-menu button[data-sel="no"]:hover { background: rgba(239,68,68,0.3); border-color: #EF4444; }
+#yos-selection-menu button[data-sel="ok"]:hover   { background: rgba(52,211,153,0.3); border-color: var(--yos-green); }
+#yos-selection-menu button[data-sel="no"]:hover   { background: rgba(248,113,113,0.3); border-color: var(--yos-red); }
+#yos-selection-menu button[data-sel="copy"]:hover { background: rgba(34,211,238,0.25); border-color: var(--yos-cyan); }
 
 /* ── Toast ─────────────────────────────────────────────────── */
 #yos-toast {
@@ -105,9 +246,9 @@
   bottom: 80px;
   right: 20px;
   z-index: 1000001;
-  background: rgba(15, 15, 26, 0.97);
+  background: rgba(13,13,31,0.97);
   border: 1px solid var(--yos-border);
-  border-radius: 8px;
+  border-radius: 9px;
   color: var(--yos-text);
   font-size: 12px;
   padding: 8px 14px;
@@ -116,55 +257,54 @@
   transition: all 0.2s ease;
   pointer-events: none;
   max-width: 280px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(139,92,246,0.25);
 }
-
 #yos-toast.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── Y-OS Logo ─────────────────────────────────────────────── */
+/* ── Y-OS Logo injected ────────────────────────────────────── */
 #yos-logo-injected {
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
+#yos-logo-injected:hover { transform: scale(1.1); }
 
-#yos-logo-injected:hover svg circle {
-  opacity: 0.85;
+/* ── Y-OS Context Menu (logo click) ───────────────────────── */
+#yos-context-menu {
+  position: fixed;
+  z-index: 1000002;
+  background: rgba(13,13,31,0.97);
+  border: 1px solid var(--yos-border);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(139,92,246,0.2);
+  backdrop-filter: blur(20px);
+  min-width: 180px;
+  display: none;
 }
-
-/* ── Branding overrides (graceful — won't break if selectors change) ── */
-
-/* Chat response H1/H2/H3 */
-[class*="response"] h1,
-[class*="assistant"] h1,
-[class*="message"]:not([class*="user"]) h1 {
-  color: var(--yos-cyan) !important;
-  border-bottom: 1px solid var(--yos-border);
-  padding-bottom: 4px;
+#yos-context-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: var(--yos-text);
+  cursor: pointer;
+  font-size: 13px;
+  text-align: left;
+  transition: background 0.12s;
 }
-
-[class*="response"] h2,
-[class*="assistant"] h2,
-[class*="message"]:not([class*="user"]) h2 {
-  color: #A78BFA !important;
+#yos-context-menu button:hover { background: rgba(139,92,246,0.2); }
+#yos-context-menu .menu-sep {
+  height: 1px;
+  background: var(--yos-border);
+  margin: 4px 8px;
 }
-
-[class*="response"] h3,
-[class*="assistant"] h3,
-[class*="message"]:not([class*="user"]) h3 {
-  color: #67E8F9 !important;
-}
-
-/* Code blocks */
-[class*="response"] code,
-[class*="assistant"] code {
-  background: rgba(16, 185, 129, 0.1) !important;
-  border: 1px solid rgba(16, 185, 129, 0.2) !important;
-  color: #6EE7B7 !important;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--yos-dark); }
-::-webkit-scrollbar-thumb { background: var(--yos-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--yos-purple); }

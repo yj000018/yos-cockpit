@@ -671,20 +671,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const versionBadge = document.getElementById('version-badge');
 
   function doForceReload() {
-    if (reloadBtn) { reloadBtn.textContent = '⏳ Reloading…'; reloadBtn.disabled = true; }
     if (versionBadge) versionBadge.classList.add('reloading');
+    if (reloadBtn) { reloadBtn.textContent = '⏳ Opening…'; reloadBtn.disabled = true; }
+
+    // Step 1: Open GitHub Desktop so user can Pull
+    try { chrome.tabs.create({ url: 'github-mac://openRepo/yos-cockpit', active: false }); } catch(e) {}
+
+    // Step 2: Open brave://extensions/ — user clicks Reload there
+    setTimeout(() => {
+      try { chrome.tabs.create({ url: 'brave://extensions/', active: true }); } catch(e) {}
+      if (versionBadge) versionBadge.classList.remove('reloading');
+      if (reloadBtn) { reloadBtn.textContent = '🔄 Force Reload Extension'; reloadBtn.disabled = false; }
+    }, 800);
+
+    // Step 3: Reload extension itself (dev/unpacked mode only)
     setTimeout(() => {
       if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.reload) {
         chrome.runtime.reload();
-      } else {
-        // fallback: notify user
-        alert('Force Reload: only works in dev mode (Load unpacked).');
-        if (reloadBtn) { reloadBtn.textContent = '🔄 Force Reload Extension'; reloadBtn.disabled = false; }
-        if (versionBadge) versionBadge.classList.remove('reloading');
       }
-    }, 300);
+    }, 1500);
   }
-
   if (reloadBtn) reloadBtn.addEventListener('click', doForceReload);
   if (versionBadge) versionBadge.addEventListener('click', doForceReload);
 

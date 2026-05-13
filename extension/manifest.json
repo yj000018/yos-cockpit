@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Y-OS Cockpit",
   "version": "2.0.0",
-  "description": "Y-OS Cockpit — Intelligence layer for Manus. Navigation, Smart Analysis, Session Lifecycle, Transform, Memory.",
+  "description": "Y-OS Cockpit \u2014 Intelligence layer for Manus. Navigation, Smart Analysis, Session Lifecycle, Transform, Memory.",
   "icons": {
     "16": "icons/yos_16.png",
     "32": "icons/yos_32.png",
@@ -13,7 +13,8 @@
     "sidePanel",
     "storage",
     "scripting",
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "host_permissions": [
     "https://manus.im/*"
@@ -23,9 +24,16 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://manus.im/*"],
-      "js": ["yos-core.js", "content_script.js"],
-      "css": ["yos_branding.css"],
+      "matches": [
+        "https://manus.im/*"
+      ],
+      "js": [
+        "yos-core.js",
+        "content_script.js"
+      ],
+      "css": [
+        "yos_branding.css"
+      ],
       "run_at": "document_idle"
     }
   ],
